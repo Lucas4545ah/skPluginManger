@@ -1,0 +1,57 @@
+command /pluginlist:
+    trigger:
+        open chest with 1 row named "What are you going to do?"
+        set {_var::*} to plugins list
+        set slot 1 of player's current inventory to a tripwire hook named "&cPlugin list" with lore "&cTotal: %size of {_var::*}%" to close then run [execute console command "/showadvancedplugin"]
+
+command /showadvancedplugin [<text>]:
+    trigger:
+        arg 1 is not set:
+            set {_var::*} to plugins list
+            send "&cPlugins: &7%plugins list%"
+            send "&cTotal: %size of {_var::*}%"
+        if arg 1 is set:
+            set {_var::*} to plugins list
+            set {targetedplayer.showadvancedplugin.%player's uuid%} to arg-1
+            send "&cPlugins: &7%plugins list%" to {targetedplayer.showadvancedplugin.%player's uuid%}
+            send "&cTotal: %size of {_var::*}%" to {targetedplayer.showadvancedplugin.%player's uuid%}
+
+# main plugin market
+
+command /pluginmarket:
+    trigger:
+        open chest with 6 rows named "Plugin Market"
+        set slot 0 of player's current inventory to a paper named "Essentials" with lore "&6&lClick to download", "&cCurrently no spigot essentials.", "Status (Disabled/Enabled): %{ifhasplugin.enabledordisable.essentials}%", "Status (Exists/Does not Exist): %{ifhasplugin.essentials}%" to run:
+             send "Spigot:"
+             send "   EssentialsX: https://www.spigotmc.org/resources/essentialsx.9089/"
+             send "Bukkit:"
+             send "   Essentials: https://dev.bukkit.org/projects/essentials"
+             send "   EssentialsX: https://dev.bukkit.org/projects/essentialsx"
+             send "&c&lNote: &7Currently their is no Essentials for spigot. So do not comment on the skript for not puting that in."
+        set slot 1 of player's current inventory to a paper named "Luckperms" with lore "&6&lClick to download", "Status (Disabled/Enabled): %{ifhasplugin.enabledordisable.luckperms}%", "Status (Exists/Does not Exist): %{ifhasplugin.luckperms}%" to run:
+            send "Spigot:"
+            send "   LuckPerms: https://www.spigotmc.org/resources/luckperms.28140/"
+
+
+
+# checks the status's
+if plugin "Essentials" exists:
+    set {ifhasplugin.essentials} to "Exists"
+else if plugin "Essentials" exists:
+    set {ifhasplugin.essentials} to "Does not exist"
+
+if plugin "Essentials" is enabled:
+    set {ifhasplugin.enabledordisable.essentials} to "Enabled"
+if plugin "Essentials" is Disabled:
+    set {ifhasplugin.enabledordisable.essentials} to "Disabled"
+
+if plugin "Luckperms" exists:
+    set {ifhasplugin.LuckPerms} to "Exists"
+else if plugin "Luckperms" exists:
+    set {ifhasplugin.LuckPerms} to "Does not exist"
+
+if plugin "LuckPerms" is enabled:
+    set {ifhasplugin.enabledordisable.essentials} to "Enabled"
+if plugin "LuckPerms" is Disabled:
+    set {ifhasplugin.enabledordisable.essentials} to "Disabled"
+
